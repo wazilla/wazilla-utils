@@ -1,5 +1,9 @@
 package de.wazilla.utils;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -7,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Objects;
 
 public final class Dates {
@@ -45,6 +50,24 @@ public final class Dates {
         if (localDateTime == null) return null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return localDateTime.format(formatter);
+    }
+
+    public static XMLGregorianCalendar toXmlGregorianCalendar(Date date) throws DatatypeConfigurationException {
+        if (date == null) return null;
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        gregorianCalendar.setTime(date);
+        DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
+        XMLGregorianCalendar xmlGregorianCalendar = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
+        xmlGregorianCalendar.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
+        return xmlGregorianCalendar;
+    }
+
+    public static XMLGregorianCalendar toXmlGregorianCalendar(LocalDate localDate) throws DatatypeConfigurationException {
+        return toXmlGregorianCalendar(toDate(localDate));
+    }
+
+    public static XMLGregorianCalendar toXmlGregorianCalendar(LocalDateTime localDateTime) throws DatatypeConfigurationException {
+        return toXmlGregorianCalendar(toDate(localDateTime));
     }
 
 }

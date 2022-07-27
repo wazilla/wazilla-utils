@@ -1,0 +1,21 @@
+
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+y
+I.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_8_2.xml,6\1\61fd4918157c43bb5dbdf05064045724fbe374c2
+w
+G.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_8_2.xml,2\7\270540527cb59d1fbe8bdf590204d75131c28ef1
+p
+@.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml,7\8\78b158d79d4a615b8bf614d6ee88675e25eba276
+t
+D.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_8_2.xml,f\7\f7708b974a0374187f3cf558c1e70622c0fe474a
+j
+:.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml,8\5\858474d8d215ec25f84b3be6f80418553ae8d1df
+w
+G.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_8_2.xml,3\1\31baef506cff1853242c5f0f32d899e23878fb09
+z
+J.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_8_2.xml,0\b\0b3b5cd49de0f52301920d5a796e81fc32cd48a6
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+d
+4src/test/java/de/wazilla/util/tests/StringsTest.java,2\d\2de223546b3c094a79038776ac3e6485e5289133
