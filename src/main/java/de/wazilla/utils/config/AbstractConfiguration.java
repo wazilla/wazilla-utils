@@ -4,12 +4,14 @@ import de.wazilla.utils.Strings;
 
 import java.net.URL;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public abstract class AbstractConfiguration {
 
-    protected List<PropertySource> propertySources;
-    protected Map<Class<?>, PropertyConverter> propertyConverterMap;
+    protected final List<PropertySource> propertySources;
+    protected final Map<Class<?>, PropertyConverter> propertyConverterMap;
+    protected final Map<Class<?>, Supplier<?>> substituteValueSupplierMap;
 
     protected AbstractConfiguration(List<PropertySource> propertySources) {
         this.propertySources = propertySources;
@@ -26,6 +28,14 @@ public abstract class AbstractConfiguration {
         this.propertyConverterMap.put(Long.class, Long::valueOf);
         this.propertyConverterMap.put(String.class, s -> s);
         this.propertyConverterMap.put(URL.class, s -> new URL(s));
+        this.substituteValueSupplierMap = new HashMap<>();
+        this.substituteValueSupplierMap.put(boolean.class, () -> false);
+        this.substituteValueSupplierMap.put(char.class, () -> 0);
+        this.substituteValueSupplierMap.put(int.class, () -> -1);
+        this.substituteValueSupplierMap.put(double.class, () -> -1D);
+        this.substituteValueSupplierMap.put(float.class, () -> -1F);
+        this.substituteValueSupplierMap.put(short.class, () -> (short) -1);
+        this.substituteValueSupplierMap.put(byte.class, () -> (byte) -1);
     }
 
     public Set<String> getKeys() {
@@ -37,15 +47,25 @@ public abstract class AbstractConfiguration {
 
     protected <T> T getValue(String key, Class<T> type) {
         PropertyConverter<T> propertyConverter = this.propertyConverterMap.get(type);
-        return getValue(key, propertyConverter);
+        return getValue(key, propertyConverter, type);
     }
 
-    protected <T> T getValue(String key, PropertyConverter<T> propertyConverter) {
+    protected <T> T getValue(String key, PropertyConverter<T> propertyConverter, Class<T> returnType) {
+        Objects.requireNonNull(key, "key is null");
+        Objects.requireNonNull(propertyConverter, "propertyConverter is null for key " + key);
+        String resolvedValue = getResolvedValue(key);
+        if (resolvedValue == null) {
+            if (returnType.isPrimitive()) {
+                Supplier<?> supplier = this.substituteValueSupplierMap.get(returnType);
+                return (T) supplier.get();
+            } else {
+                return null;
+            }
+        }
         try {
-            String resolvedValue = getResolvedValue(key);
             return propertyConverter.convert(resolvedValue);
-        } catch (Exception e) {
-            throw new RuntimeException(e); // TODO
+        } catch (Exception ex) {
+            throw new ConfigurationRuntimeException("Error converting '" + resolvedValue + "' with " + propertyConverter.getClass().getName(), ex);
         }
     }
 

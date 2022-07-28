@@ -41,7 +41,7 @@ public final class Throwables {
      * @return ein {@link Throwable} mit dem untersten Fehler innerhalb der
      *         Hierachie.
      */
-    public Throwable getRootCause(Throwable thrown) {
+    public static Throwable getRootCause(Throwable thrown) {
         if (thrown == null) return null;
         Throwable rootCause = thrown;
         while (rootCause.getCause() != null) {

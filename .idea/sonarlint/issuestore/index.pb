@@ -15,7 +15,11 @@ w
 G.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_8_2.xml,3\1\31baef506cff1853242c5f0f32d899e23878fb09
 z
 J.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_8_2.xml,0\b\0b3b5cd49de0f52301920d5a796e81fc32cd48a6
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 d
 4src/test/java/de/wazilla/util/tests/StringsTest.java,2\d\2de223546b3c094a79038776ac3e6485e5289133
+l
+<src/main/java/de/wazilla/utils/config/PropertyConverter.java,0\f\0f86b0642f6d587f847f046dc7c7712aca01c548
+i
+9src/main/java/de/wazilla/utils/config/PropertySource.java,a\f\aff641fe697955bab0d9918ac9d97f72ad04fd05
+Y
+)src/main/java/de/wazilla/utils/Props.java,f\a\faa3e73304e8dcc74f68798df3923d75728e4c4e
