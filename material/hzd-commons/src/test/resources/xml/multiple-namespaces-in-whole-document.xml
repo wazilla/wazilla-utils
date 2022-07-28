@@ -1,0 +1,7 @@
+<Root xmlns:foo="http://example.org/foo" xmlns:bar="http://example.org/bar" xmlns="http://example.org/default">
+	<foo:Dummy test="true">
+		<Example xmlns="http://example.org/example">
+			<bar:Something abc="xyz" />
+		</Example>
+	</foo:Dummy>
+</Root>
