@@ -17,18 +17,40 @@ public class ConfigurationInvocationHandler extends AbstractConfiguration implem
         System.out.println("Args: " + Arrays.toString(args));
         String key = getKey(method);
         System.out.println("Key: " + key);
-        return null;
+        Class<?> type = method.getReturnType();
+        System.out.println("Type: " + type);
+        PropertyConverter propertyConverter = getPropertyConverter(method);
+        return getValue(key, type);
     }
 
     private String getKey(Method method) {
-        String key = method.getName();
-        if (key.startsWith("get") && key.length() > 4) {
-            key = key.substring(3, 4).toLowerCase() + key.substring(4);
-        } else if (key.startsWith("is") && key.length() > 3) {
-            key = key.substring(2, 3).toLowerCase() + key.substring(3);
+        ConfigurationKey annotation = method.getAnnotation(ConfigurationKey.class);
+        if (annotation != null) {
+            return annotation.value();
+        } else {
+            String key = method.getName();
+            if (key.startsWith("get") && key.length() > 4) {
+                key = key.substring(3, 4).toLowerCase() + key.substring(4);
+            } else if (key.startsWith("is") && key.length() > 3) {
+                key = key.substring(2, 3).toLowerCase() + key.substring(3);
+            }
+            return key;
         }
-        // TODO Annotation
-        return key;
+    }
+
+    private PropertyConverter getPropertyConverter(Method method) {
+        ConfigurationConverter annotation = method.getAnnotation(ConfigurationConverter.class);
+        if (annotation != null) {
+            try {
+                Class<? extends PropertyConverter> converterClass = annotation.value();
+                return converterClass.getConstructor().newInstance();
+            } catch (ReflectiveOperationException ex) {
+                throw new RuntimeException(ex); // TODO
+            }
+        } else {
+            Class<?> returnType = method.getReturnType();
+            return propertyConverterMap.get(returnType);
+        }
     }
 
 }
