@@ -1,1 +1,4 @@
-https://dzone.com/articles/how-to-publish-artifacts-to-maven-central
+- Maven Deploy to central
+  - https://dzone.com/articles/how-to-publish-artifacts-to-maven-central
+  - https://github.com/jonashackt/github-actions-release-maven
+
