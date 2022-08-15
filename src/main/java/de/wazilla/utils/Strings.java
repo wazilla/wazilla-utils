@@ -19,6 +19,19 @@ public final class Strings {
         return value != null && !value.isEmpty();
     }
 
+    public static String join(Iterable<String> values, char separator) {
+        return join(values, Character.toString(separator));
+    }
+    public static String join(Iterable<String> values, String separator) {
+        if (values == null) return null;
+        StringBuilder sb = new StringBuilder();
+        for(String value : values) {
+            if (sb.length() > 0 && separator != null) sb.append(separator);
+            sb.append(value);
+        }
+        return sb.toString();
+    }
+
     /**
      * Füllt den übergebenen String links (also am Anfang) bis zur angeg. Länge auf. Als Füllzeichen wird der Default (Blank)
      * verwendet, sofern über die entsprechende System-Property kein abweichender Wert gesetzt wurde.
@@ -61,6 +74,20 @@ public final class Strings {
             // Nur so viel vom Filler einsetzen, dass die max. Laenge nicht ueberschritten wird.
             int max = sb.length() + filler.length() > len ? len - sb.length() : filler.length();
             sb.insert(0, filler.substring(0, max));
+        }
+        return sb.toString();
+    }
+
+    public static String repeat(char ch, int count) {
+        return repeat(Character.toString(ch), count);
+    }
+
+    public static String repeat(String value, int count) {
+        if (value == null) return null;
+        if (count < 1) return value;
+        StringBuilder sb = new StringBuilder(value.length() * count);
+        for(int i = 0; i < count; i++) {
+            sb.append(value);
         }
         return sb.toString();
     }
@@ -159,16 +186,6 @@ public final class Strings {
             int index = (int) Math.floor(random);
             char c = set.charAt(index);
             sb.append(c);
-        }
-        return sb.toString();
-    }
-
-    // TODO Javadoc
-    public static String repeat(char filler, int len) {
-        if (len <= 0) throw new IllegalArgumentException("len <= 0!");
-        StringBuilder sb = new StringBuilder(len);
-        for(int i = 0; i < len; i++) {
-            sb.append(filler);
         }
         return sb.toString();
     }
