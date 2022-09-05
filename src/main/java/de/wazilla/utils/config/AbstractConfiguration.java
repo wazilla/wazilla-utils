@@ -1,6 +1,9 @@
 package de.wazilla.utils.config;
 
 import de.wazilla.utils.Strings;
+import de.wazilla.utils.text.Lookup;
+import de.wazilla.utils.text.StandardVariableResolver;
+import de.wazilla.utils.text.VariableResolver;
 
 import java.net.URL;
 import java.util.*;
@@ -10,8 +13,10 @@ import java.util.stream.Collectors;
 public abstract class AbstractConfiguration {
 
     protected final List<PropertySource> propertySources;
-    protected final Map<Class<?>, PropertyConverter> propertyConverterMap;
+    protected final Map<Class<?>, PropertyConverter<?>> propertyConverterMap;
     protected final Map<Class<?>, Supplier<?>> substituteValueSupplierMap;
+    protected final VariableResolver variableResolver;
+
 
     protected AbstractConfiguration(List<PropertySource> propertySources) {
         this.propertySources = propertySources;
@@ -36,6 +41,7 @@ public abstract class AbstractConfiguration {
         this.substituteValueSupplierMap.put(float.class, () -> -1F);
         this.substituteValueSupplierMap.put(short.class, () -> (short) -1);
         this.substituteValueSupplierMap.put(byte.class, () -> (byte) -1);
+        this.variableResolver = new StandardVariableResolver();
     }
 
     public Set<String> getKeys() {
@@ -45,11 +51,13 @@ public abstract class AbstractConfiguration {
                 .collect(Collectors.toSet());
     }
 
+    @SuppressWarnings("unchecked")
     protected <T> T getValue(String key, Class<T> type) {
-        PropertyConverter<T> propertyConverter = this.propertyConverterMap.get(type);
+        PropertyConverter<T> propertyConverter = (PropertyConverter<T>) this.propertyConverterMap.get(type);
         return getValue(key, propertyConverter, type);
     }
 
+    @SuppressWarnings("unchecked")
     protected <T> T getValue(String key, PropertyConverter<T> propertyConverter, Class<T> returnType) {
         Objects.requireNonNull(key, "key is null");
         Objects.requireNonNull(propertyConverter, "propertyConverter is null for key " + key);
@@ -70,7 +78,9 @@ public abstract class AbstractConfiguration {
     }
 
     private String getResolvedValue(String key) {
-        return getPropertyValue(key); // TODO resolve placeholders
+        String value = getPropertyValue(key);
+        Lookup lookup = this::getPropertyValue;
+        return variableResolver.resolve(value, lookup);
     }
 
     private String getPropertyValue(String key) {

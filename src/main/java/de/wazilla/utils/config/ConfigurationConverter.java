@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface ConfigurationConverter {
 
-    Class<? extends PropertyConverter> value();
+    Class<? extends PropertyConverter<?>> value();
 
 }

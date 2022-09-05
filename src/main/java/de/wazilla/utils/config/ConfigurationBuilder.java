@@ -24,8 +24,9 @@ public class ConfigurationBuilder {
         return this;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T build(Class<T> configurationInterface) {
-        if (!configurationInterface.isInterface()) throw new IllegalStateException("TODO"); // TODO
+        if (!configurationInterface.isInterface()) throw new IllegalStateException(configurationInterface + " is not an interface");
         ClassLoader classLoader = configurationInterface.getClassLoader();
         Class<?>[] interfaces = {configurationInterface};
         InvocationHandler handler = new ConfigurationInvocationHandler(this.propertySources);

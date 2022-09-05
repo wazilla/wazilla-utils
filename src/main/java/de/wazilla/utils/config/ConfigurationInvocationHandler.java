@@ -16,6 +16,7 @@ public class ConfigurationInvocationHandler extends AbstractConfiguration implem
     }
 
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (isPublicAbstractConfigurationMethod(method)) {
             Method ownPublicMethod = getClass().getMethod(method.getName(), method.getParameterTypes());
@@ -43,6 +44,7 @@ public class ConfigurationInvocationHandler extends AbstractConfiguration implem
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private PropertyConverter getPropertyConverter(Method method) {
         ConfigurationConverter annotation = method.getAnnotation(ConfigurationConverter.class);
         if (annotation != null) {
