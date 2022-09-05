@@ -7,6 +7,7 @@ package de.wazilla.utils.text;
  * @author Ralf Lang
  * 
  */
+@FunctionalInterface
 public interface Lookup {
 
 	/**
