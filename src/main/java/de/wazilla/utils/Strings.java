@@ -1,5 +1,8 @@
 package de.wazilla.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class Strings {
 
     private static final String DEFAULT_FILLER = System.getProperty(String.class.getName() + ".defaultFiller", " ");
@@ -188,6 +191,23 @@ public final class Strings {
             sb.append(c);
         }
         return sb.toString();
+    }
+
+    public static List<String> split(String value, char separator) {
+        List<String> parts = new ArrayList<>();
+        if (value == null) return parts;
+        StringBuilder sb = new StringBuilder();
+        for(int index = 0; index < value.length(); index++) {
+            char ch = value.charAt(index);
+            if (ch == separator) {
+                parts.add(sb.toString());
+                sb = new StringBuilder();
+            } else {
+                sb.append(ch);
+            }
+        }
+        parts.add(sb.toString());
+        return parts;
     }
 
 }

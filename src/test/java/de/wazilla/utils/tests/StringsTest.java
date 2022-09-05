@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 class StringsTest {
 
     @Test
@@ -141,4 +143,25 @@ class StringsTest {
         String actual = Strings.rightPad("bar", 7, "abc");
         assertEquals("barabca", actual);
     }
+
+    @Test
+    public void split_NullGiven_ShouldReturnEmptyList() {
+        assertTrue(Strings.split(null, ',').isEmpty());
+    }
+
+    @Test
+    public void split_EmptyStringGiven_ShouldReturnListWithOneEmptyEntry() {
+        List<String> parts = Strings.split("", ',');
+        assertEquals(1, parts.size());
+        assertTrue(parts.get(0).isEmpty());
+    }
+
+    @Test
+    public void split_StringGiven_ShouldReturnListOfStrings() {
+        List<String> parts = Strings.split("foo,bar", ',');
+        assertEquals(2, parts.size());
+        assertEquals("foo", parts.get(0));
+        assertEquals("bar", parts.get(1));
+    }
+
 }
