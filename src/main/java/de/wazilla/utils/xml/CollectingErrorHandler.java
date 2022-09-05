@@ -78,7 +78,6 @@ public class CollectingErrorHandler implements ErrorHandler {
 
 	@Override
 	public void fatalError(SAXParseException exception) throws SAXException {
-		// TODO: gibt es Fälle, wo es sinnvoll wäre, diese fatalen Fehler ebenfalls zu sammeln?
 		throw new SAXException("Schwerwiegender Fehler beim Verarbeiten des XML!", exception);
 	}
 
