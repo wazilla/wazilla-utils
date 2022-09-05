@@ -3,6 +3,7 @@ package de.wazilla.utils.tests;
 import de.wazilla.utils.Streams;
 import org.junit.jupiter.api.Test;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -13,7 +14,7 @@ public class StreamsTest {
 
 	@Test
 	void close_NullGiven_ShouldNotThrowException() {
-		Streams.close(null);
+		Streams.close((Closeable[])null);
 	}
 	
 	@Test
