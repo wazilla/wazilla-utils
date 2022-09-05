@@ -7,12 +7,14 @@ import java.util.Objects;
 
 public final class Maps {
 
+    @SuppressWarnings("rawtypes")
     private static final Class<? extends Map> DEFAULT_MAP_IMPLEMENTATION_CLASS = LinkedHashMap.class;
 
     private Maps() {
         // Utility class
     }
 
+    @SuppressWarnings("rawtypes")
     public static <K, V> MapBuilder<K, V> builder(Class<? extends Map> mapImplementationClass) {
         Map<K, V> map = createMap(mapImplementationClass);
         return new MapBuilder<>(map);
@@ -27,6 +29,7 @@ public final class Maps {
         return createMap(keys, values, DEFAULT_MAP_IMPLEMENTATION_CLASS);
     }
 
+    @SuppressWarnings("rawtypes")
     public static <K, V> Map<K, V> createMap(K[] keys, V[] values, Class<? extends Map> mapImplementationClass) {
         Objects.requireNonNull(keys, "keys == null");
         Objects.requireNonNull(values, "values == null");
@@ -38,6 +41,7 @@ public final class Maps {
         return map;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private static <K, V> Map<K, V> createMap(Class<? extends Map> mapImplementationClass) {
         try {
             return mapImplementationClass.getConstructor().newInstance();
