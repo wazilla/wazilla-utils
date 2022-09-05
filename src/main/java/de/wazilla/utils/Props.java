@@ -21,6 +21,15 @@ public final class Props {
         return keys;
     }
 
+    public static Map<String, String> toMap(Properties properties) {
+        Map<String, String> map = new LinkedHashMap<>();
+        for(String key: toKeySet(properties)) {
+            String value = properties.getProperty(key);
+            map.put(key, value);
+        }
+        return map;
+    }
+
     public static Properties load(InputStream in) throws IOException {
         Properties properties = new Properties();
         if (in == null) return properties;

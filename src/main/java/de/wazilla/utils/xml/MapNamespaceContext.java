@@ -9,13 +9,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 
+import de.wazilla.utils.Props;
+
 /**
  * Eine Implementierung von {@link NamespaceContext} mit Hilfe einer einfachen
- * <code>Map&lt;String, List&lt;String&gt;&gt;</code>. Der Key innerhalb der Map ist dabei die URI des Namespace, der Value eine
+ * <code>Map&lt;String, List&lt;String&gt;&gt;</code>. Der Key innerhalb der Map
+ * ist dabei die URI des Namespace, der Value eine
  * Liste an Prefixen.
  * 
  * @author Ralf Lang
@@ -26,7 +31,8 @@ public class MapNamespaceContext implements NamespaceContext {
 	private Map<String, Set<String>> namespaceMap;
 
 	/**
-	 * Erzeugt einen neuen, zunächst leeren {@link MapNamespaceContext}. Anschließend sollen Namespaces über die
+	 * Erzeugt einen neuen, zunächst leeren {@link MapNamespaceContext}.
+	 * Anschließend sollen Namespaces über die
 	 * {@link #add(String, String)} Methode hinzugefügt werden.
 	 */
 	public MapNamespaceContext() {
@@ -34,51 +40,20 @@ public class MapNamespaceContext implements NamespaceContext {
 	}
 
 	/**
-	 * Erzeugt einen neuen {@link MapNamespaceContext} mit dem übergebenen Namespaces.
+	 * Erzeugt einen neuen {@link MapNamespaceContext} mit dem übergebenen
+	 * Namespaces.
 	 * 
-	 * @param namespaceMap eine {@link Map} mit Namespaces. Der Key ist die Namespace-URI, der Value eine Liste an Prefixen.
+	 * @param namespaceMap eine {@link Map} mit Namespaces. Der Key ist die
+	 *                     Namespace-URI, der Value eine Liste an Prefixen.
 	 */
 	public MapNamespaceContext(Map<String, Set<String>> namespaceMap) {
-		setNamespaceMap(Objects.requireNonNull(namespaceMap));
-	}
-
-	public void add(String namespaceURI, String prefix) {
-		add(namespaceURI, createSingleEntrySet(prefix));
-	}
-
-	/**
-	 * Lädt ein Namespace-Mapping aus {@link Properties}. Der Key ist die URI, der Value der Prefix. Mehrere Prefixe
-	 * zur selben URI werden hier somit nicht unterstützt.
-	 *
-	 * @param properties das {@link Properties}-Objekt
-	 */
-	public void add(Properties properties) {
-		if (properties == null) return;
-		Enumeration<?> propertyNames = properties.propertyNames();
-		while (propertyNames.hasMoreElements()) {
-			String namespaceURI = propertyNames.toString();
-			String prefix = properties.getProperty(namespaceURI);
-			add(namespaceURI, prefix);
-		}
-	}
-
-	/**
-	 * Fügt ein Namespace-Mapping hinzu. Ein ggf. bereits zuvor bereits bestehendes Mapping zu dieser URI
-	 * wird dabei überschrieben.
-	 *
-	 * @param namespaceURI die URI des Namespace
-	 * @param prefixes die Prefixe
-	 */
-	public void add(String namespaceURI, Set<String> prefixes) {
-		if (!this.namespaceMap.containsKey(namespaceURI)) {
-			this.namespaceMap.put(namespaceURI, new HashSet<>());
-		}
-		this.namespaceMap.get(namespaceURI).addAll(prefixes);
+		this.namespaceMap = Collections.unmodifiableMap(Objects.requireNonNull(namespaceMap));
 	}
 
 	@Override
 	public String getNamespaceURI(String prefix) {
-		if (prefix == null) return null;
+		if (prefix == null)
+			return null;
 		String result = XMLConstants.NULL_NS_URI;
 		if (XMLConstants.XML_NS_PREFIX.equals(prefix)) {
 			result = XMLConstants.XML_NS_URI;
@@ -108,7 +83,8 @@ public class MapNamespaceContext implements NamespaceContext {
 
 	@Override
 	public Iterator<String> getPrefixes(String namespaceURI) {
-		if (namespaceURI == null) throw new IllegalArgumentException("Es wurde keine namespaceURI angegeben!");
+		if (namespaceURI == null)
+			throw new IllegalArgumentException("Es wurde keine namespaceURI angegeben!");
 		Set<String> prefixes = null;
 		if (XMLConstants.XML_NS_URI.equals(namespaceURI)) {
 			prefixes = createSingleEntrySet(XMLConstants.XML_NS_PREFIX);
@@ -123,13 +99,9 @@ public class MapNamespaceContext implements NamespaceContext {
 	}
 
 	public Map<String, Set<String>> getNamespaceMap() {
-		return namespaceMap;
+		return this.namespaceMap;
 	}
 
-	public void setNamespaceMap(Map<String, Set<String>> namespaceMap) {
-		this.namespaceMap = Objects.requireNonNull(namespaceMap);
-	}
-	
 	private Set<String> createSingleEntrySet(String value) {
 		Set<String> singleEntrySet = new HashSet<>();
 		singleEntrySet.add(value);
