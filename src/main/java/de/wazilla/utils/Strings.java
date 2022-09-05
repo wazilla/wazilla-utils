@@ -2,6 +2,7 @@ package de.wazilla.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class Strings {
 
@@ -14,12 +15,30 @@ public final class Strings {
         // Utility class
     }
 
+    public static boolean equals(String left, String right) {
+        if (left == null || right == null) return false;
+        return left.equals(right);
+    }
+
+    public static boolean equalsIgnoringCase(String left, String right) {
+        if (left == null || right == null) return false;
+        return left.equalsIgnoreCase(right);
+    }
+
+    public static boolean isNullOrBlank(String value) {
+        return value == null || value.trim().isEmpty();
+    }
+
+    public static boolean isNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
+    }
+
     public static boolean isNotNullOrBlank(String value) {
-        return value != null && !value.trim().isEmpty();
+        return !isNullOrBlank(value);
     }
 
     public static boolean isNotNullOrEmpty(String value) {
-        return value != null && !value.isEmpty();
+        return !isNullOrEmpty(value);
     }
 
     public static String join(Iterable<String> values, char separator) {
