@@ -1,4 +1,4 @@
-package de.wazilla.utils.xml.database;
+package de.wazilla.utils.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
