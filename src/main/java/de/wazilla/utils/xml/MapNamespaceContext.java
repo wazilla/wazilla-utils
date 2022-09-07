@@ -31,15 +31,6 @@ public class MapNamespaceContext implements NamespaceContext {
 	private Map<String, Set<String>> namespaceMap;
 
 	/**
-	 * Erzeugt einen neuen, zunächst leeren {@link MapNamespaceContext}.
-	 * Anschließend sollen Namespaces über die
-	 * {@link #add(String, String)} Methode hinzugefügt werden.
-	 */
-	public MapNamespaceContext() {
-		this(new LinkedHashMap<String, Set<String>>());
-	}
-
-	/**
 	 * Erzeugt einen neuen {@link MapNamespaceContext} mit dem übergebenen
 	 * Namespaces.
 	 * 
@@ -87,9 +78,9 @@ public class MapNamespaceContext implements NamespaceContext {
 			throw new IllegalArgumentException("Es wurde keine namespaceURI angegeben!");
 		Set<String> prefixes = null;
 		if (XMLConstants.XML_NS_URI.equals(namespaceURI)) {
-			prefixes = createSingleEntrySet(XMLConstants.XML_NS_PREFIX);
+			prefixes = Collections.singleton(XMLConstants.XML_NS_PREFIX);
 		} else if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI)) {
-			prefixes = createSingleEntrySet(XMLConstants.XMLNS_ATTRIBUTE);
+			prefixes = Collections.singleton(XMLConstants.XMLNS_ATTRIBUTE);
 		} else if (namespaceMap.containsKey(namespaceURI)) {
 			prefixes = namespaceMap.get(namespaceURI);
 		} else {
@@ -100,12 +91,6 @@ public class MapNamespaceContext implements NamespaceContext {
 
 	public Map<String, Set<String>> getNamespaceMap() {
 		return this.namespaceMap;
-	}
-
-	private Set<String> createSingleEntrySet(String value) {
-		Set<String> singleEntrySet = new HashSet<>();
-		singleEntrySet.add(value);
-		return singleEntrySet;
 	}
 
 }

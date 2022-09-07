@@ -15,6 +15,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,7 +51,7 @@ public final class XML {
      */
     public static NamespaceContext createNamespaceContext(Document document) {
         if (document == null) return null;
-        MapNamespaceContext mapNamespaceContext = new MapNamespaceContext();
+        Map<String, Set<String>> namespaceMap = new HashMap<>();
         int defaultPrefixCounter = 0;
         DocumentTraversal traversal = (DocumentTraversal) document;
         NodeIterator nodeIterator = traversal.createNodeIterator(document, NodeFilter.SHOW_ELEMENT, null, false);
@@ -77,12 +81,12 @@ public final class XML {
                         } else {
                             prefix = name.substring(index + 1);
                         }
-                        mapNamespaceContext.add(value, prefix);
+                        namespaceMap.put(value, Collections.singleton(prefix));
                     }
                 }
             }
         }
-        return mapNamespaceContext;
+        return new MapNamespaceContext(namespaceMap);
     }
 
     /**
