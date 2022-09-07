@@ -13,6 +13,9 @@ public class Query {
     }
 
     public Result execute() throws SQLException {
+        try (Connection connection = this.connectionSupplier.get()) {
+            // TODO impl
+        }
         return null;
     }
 
