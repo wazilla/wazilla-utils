@@ -43,6 +43,7 @@ public final class Strings {
     public static String join(Iterable<String> values, char separator) {
         return join(values, Character.toString(separator));
     }
+
     public static String join(Iterable<String> values, String separator) {
         if (values == null) return null;
         StringBuilder sb = new StringBuilder();

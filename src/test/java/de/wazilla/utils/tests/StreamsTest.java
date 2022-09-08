@@ -3,12 +3,9 @@ package de.wazilla.utils.tests;
 import de.wazilla.utils.Streams;
 import org.junit.jupiter.api.Test;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StreamsTest {
 
@@ -29,6 +26,15 @@ public class StreamsTest {
 		TestInputStream stream = new TestInputStream();
 		Streams.close(stream);
 		assertTrue(stream.isClosed());
+	}
+
+	@Test
+	void copy_InAndOutStreamGiven_ShouldCopyStream() throws IOException {
+		byte[] bytes = "foobar".getBytes();
+		ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		Streams.copy(in, out);
+		assertArrayEquals(bytes, out.toByteArray());
 	}
 
 	@Test

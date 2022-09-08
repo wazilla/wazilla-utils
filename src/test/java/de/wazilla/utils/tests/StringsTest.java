@@ -3,11 +3,87 @@ package de.wazilla.utils.tests;
 import de.wazilla.utils.Strings;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class StringsTest {
+
+    @Test
+    void equals_NullAndNullGiven_ShouldNotBeEquals() {
+        assertFalse(Strings.equals(null, null));
+    }
+
+    @Test
+    void equals_NullAndValueGiven_ShouldNotBeEquals() {
+        assertFalse(Strings.equals(null, "bar"));
+    }
+
+    @Test
+    void equals_ValueAndNullGiven_ShouldNotBeEquals() {
+        assertFalse(Strings.equals("foo", null));
+    }
+
+    @Test
+    void equals_SameValueGiven_ShouldBeEquals() {
+        assertTrue(Strings.equals("foo", "foo"));
+    }
+
+    @Test
+    void equals_DifferentValuesGiven_ShouldNotBeEquals() {
+        assertFalse(Strings.equals("foo", "bar"));
+    }
+
+    @Test
+    void equalsIgnoringCase_NullAndNullGiven_ShouldNotBeEquals() {
+        assertFalse(Strings.equalsIgnoringCase(null, null));
+    }
+
+    @Test
+    void equalsIgnoringCase_NullAndValueGiven_ShouldNotBeEquals() {
+        assertFalse(Strings.equalsIgnoringCase(null, "bar"));
+    }
+
+    @Test
+    void equalsIgnoringCase_ValueAndNullGiven_ShouldNotBeEquals() {
+        assertFalse(Strings.equalsIgnoringCase("foo", null));
+    }
+
+    @Test
+    void equalsIgnoringCase_SameValueGiven_ShouldBeEquals() {
+        assertTrue(Strings.equalsIgnoringCase("foo", "foo"));
+    }
+
+    @Test
+    void equalsIgnoringCase_SameValueWithDifferentCaseGiven_ShouldBeEquals() {
+        assertTrue(Strings.equalsIgnoringCase("FoO", "foo"));
+    }
+
+    @Test
+    void equalsIgnoringCase_DifferentValuesGiven_ShouldNotBeEquals() {
+        assertFalse(Strings.equalsIgnoringCase("foo", "bar"));
+    }
+
+
+    @Test
+    void isNullOrBlank_NullGiven_ShouldBeTrue() {
+        assertTrue(Strings.isNullOrBlank(null));
+    }
+
+    @Test
+    void isNullOrBlank_EmptyStringGiven_ShouldBeTrue() {
+        assertTrue(Strings.isNullOrBlank(""));
+    }
+
+    @Test
+    void isNullOrBlank_BlankStringGiven_ShouldBeTrue() {
+        assertTrue(Strings.isNullOrBlank(" "));
+    }
+
+    @Test
+    void isNullOrBlank_NonBlankStringGiven_ShouldBeFalse() {
+        assertFalse(Strings.isNullOrBlank("foo"));
+    }
 
     @Test
     void isNotNullOrEmpty_NullGiven_FalseExpected() {
@@ -81,6 +157,27 @@ class StringsTest {
     public void randomNumeric_LenAndSetGiven_ShouldCreateRandomString() {
         String actual = Strings.randomNumeric(11);
         assertTrue(actual.matches("[0-9]{11}"));
+    }
+
+    @Test
+    public void repeat_NullGiven_ShouldReturnNull() {
+        assertNull(Strings.repeat(null, 69));
+    }
+
+    @Test
+    public void repeat_StringAndLenLesserThanOneGiven_ShouldReturnUnmodifiedString() {
+        assertEquals("foo", Strings.repeat("foo", 0));
+        assertEquals("foo", Strings.repeat("foo", -1));
+    }
+
+    @Test
+    public void repeat_CharAndLenGiven_ShouldReturnRepeatedChar() {
+        assertEquals("aaa", Strings.repeat('a', 3));
+    }
+
+    @Test
+    public void repeat_StringAndLenGiven_ShouldReturnRepeatedString() {
+        assertEquals("foofoo", Strings.repeat("foo", 2));
     }
 
     @Test
